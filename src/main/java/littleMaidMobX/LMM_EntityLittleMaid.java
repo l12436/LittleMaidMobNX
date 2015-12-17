@@ -1916,9 +1916,10 @@ public class LMM_EntityLittleMaid extends EntityTameable implements ITextureEnti
 	public void onEntityUpdate() {
 		//音声再生
 		if(worldObj.isRemote&&!playingSound.isEmpty()){
-			float lpitch = LMM_LittleMaidMobNX.cfg_VoiceDistortion ? (rand.nextFloat() * 0.2F) + 0.95F : 1.0F;
+			List<LMM_EnumSound> playingSoundTmp = new ArrayList<LMM_EnumSound>();
+			playingSoundTmp.addAll(playingSound);
 			
-			for(LMM_EnumSound enumsound : playingSound){
+			for(LMM_EnumSound enumsound : playingSoundTmp){
 				String s = LMM_SoundManager.instance.getSoundValue(enumsound, textureData.getTextureName(0), textureData.getColor());
 				//まさかな…
 				if(s==null) return;
