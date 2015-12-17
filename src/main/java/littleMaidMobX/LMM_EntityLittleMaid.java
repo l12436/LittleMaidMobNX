@@ -1929,7 +1929,9 @@ public class LMM_EntityLittleMaid extends EntityTameable implements ITextureEnti
 				}
 				LMM_LittleMaidMobNX.Debug(String.format("id:%d, se:%04x-%s (%s)", getEntityId(), enumsound.index, enumsound.name(), s));
 
-				worldObj.playSound(posX, posY, posZ, s, getSoundVolume(), lpitch, false);
+				if (!s.isEmpty()) {
+					worldObj.playSound(posX, posY, posZ, s, getSoundVolume(), lpitch, false);
+				}
 			}
 			playingSound.clear();
 //			LMM_LittleMaidMobNX.proxy.playLittleMaidSound(worldObj, posX, posY, posZ, playingSound, getSoundVolume(), lpitch, false);
