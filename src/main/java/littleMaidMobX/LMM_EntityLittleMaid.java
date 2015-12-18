@@ -22,17 +22,6 @@ import static littleMaidMobX.LMM_Statics.dataWatch_ItemUse;
 import static littleMaidMobX.LMM_Statics.dataWatch_Mode;
 import static littleMaidMobX.LMM_Statics.dataWatch_Parts;
 import static littleMaidMobX.LMM_Statics.dataWatch_Texture;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.UUID;
-
 import mmmlibx.lib.ITextureEntity;
 import mmmlibx.lib.MMMLib;
 import mmmlibx.lib.MMM_Counter;
@@ -51,6 +40,7 @@ import net.blacklab.lmmnx.LMMNX_ItemRegisterKey;
 import net.blacklab.lmmnx.LMMNX_NetSync;
 import net.blacklab.lmmnx.api.item.LMMNX_API_Item;
 import net.blacklab.lmmnx.api.item.LMMNX_IItemSpecialSugar;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoublePlant;
 import net.minecraft.block.BlockLeaves;
@@ -104,8 +94,6 @@ import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.profiler.Profiler;
-import net.minecraft.stats.Achievement;
-import net.minecraft.stats.AchievementList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
@@ -124,6 +112,18 @@ import net.minecraft.world.biome.BiomeGenBase.TempCategory;
 import net.minecraft.world.pathfinder.WalkNodeProcessor;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
+
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import wrapper.W_Common;
 
 public class LMM_EntityLittleMaid extends EntityTameable implements ITextureEntity {
@@ -373,6 +373,7 @@ public class LMM_EntityLittleMaid extends EntityTameable implements ITextureEnti
 		if(!isContract()) setMaidMode("Wild");
 	}
 
+	@Override
 	protected void applyEntityAttributes() {
 		// 初期パラメーター
 		super.applyEntityAttributes();
@@ -1097,6 +1098,7 @@ public class LMM_EntityLittleMaid extends EntityTameable implements ITextureEnti
 	}
 
 	// ポーション効果のエフェクト
+	@Override
 	public void setAbsorptionAmount(float par1) {
 		// AbsorptionAmount
 		if (par1 < 0.0F) {
@@ -1105,6 +1107,7 @@ public class LMM_EntityLittleMaid extends EntityTameable implements ITextureEnti
 
 		this.getDataWatcher().updateObject(dataWatch_Absoption, Float.valueOf(par1));
 	}
+	@Override
 	public float getAbsorptionAmount() {
 		return this.getDataWatcher().getWatchableObjectFloat(dataWatch_Absoption);
 	}
@@ -1459,6 +1462,7 @@ public class LMM_EntityLittleMaid extends EntityTameable implements ITextureEnti
 
 	}
 
+	@Override
 	public boolean canBePushed()
 	{
 		// --------------------------------------------
@@ -1869,6 +1873,7 @@ public class LMM_EntityLittleMaid extends EntityTameable implements ITextureEnti
 		}
 	}
 
+	@Override
 	public void updateAITasks()
 	{
 		super.updateAITasks();
@@ -1916,7 +1921,8 @@ public class LMM_EntityLittleMaid extends EntityTameable implements ITextureEnti
 	public void onEntityUpdate() {
 		//音声再生
 		if(worldObj.isRemote&&!playingSound.isEmpty()){
-			List<LMM_EnumSound> playingSoundTmp = new ArrayList<LMM_EnumSound>();
+			float lpitch = LMM_LittleMaidMobNX.cfg_VoiceDistortion ? (rand.nextFloat() * 0.2F) + 0.95F : 1.0F;
+			List<LMM_EnumSound> playingSoundTmp = new CopyOnWriteArrayList<LMM_EnumSound>();
 			playingSoundTmp.addAll(playingSound);
 			
 			for(LMM_EnumSound enumsound : playingSoundTmp){
@@ -3282,6 +3288,7 @@ public class LMM_EntityLittleMaid extends EntityTameable implements ITextureEnti
 	public boolean isTamed() {
 		return isContract();
 	}
+	@Override
 	public boolean isContract() {
 //		return worldObj.isRemote ? maidContract : super.isTamed();
 		return super.isTamed();
@@ -4152,6 +4159,7 @@ public class LMM_EntityLittleMaid extends EntityTameable implements ITextureEnti
 		this.experienceValue = val;
 	}
 
+	@Override
 	public void setFlag(int par1, boolean par2) {
 		super.setFlag(par1, par2);
 	}
